@@ -53,4 +53,4 @@ words are considered.
 
 ### -Boss Fight (just for fun)
 
-In development, release date is ETA November 15, 2023.
+In development, release date is Mid-November 2023.
