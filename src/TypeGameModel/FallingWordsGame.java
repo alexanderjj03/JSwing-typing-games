@@ -1,5 +1,6 @@
 package TypeGameModel;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.*;
@@ -25,9 +26,6 @@ public class FallingWordsGame {
     private TypePassage curPassage; // the word that is being typed
 
     private List<TypePassage> wordPassages; // list of single-word typePassages on screen
-    private List<Integer> xPosList; // X coordinates of the words on screen
-    private List<Integer> yPosList; // Y coordinates of the words on screen
-    private List<String> selectedWords; // the actual words that are on screen
     private List<String> allWords; // every word in wordlist.10000
 
     // Constructs a falling words game. The idea is for random words to show up at the top of the screen and for them
@@ -37,9 +35,6 @@ public class FallingWordsGame {
     // REQUIRES: Difficulty can be 1, 2, or 3.
     public FallingWordsGame (int diff) {
         wordPassages = new ArrayList<>();
-        xPosList = new ArrayList<>();
-        yPosList = new ArrayList<>();
-        selectedWords = new ArrayList<>();
         allWords = new ArrayList<>();
         correctChars = 0;
         charsTyped = 0;
@@ -48,6 +43,7 @@ public class FallingWordsGame {
         wordsLeft = 10 + 15 * diff; // Starts at 25 for easy, 40 for medium. 55 for hard.
         running = false;
         livesLeft = 3;
+        wordSelected = false;
         gameWon = false;
         gameLost = false;
 
@@ -64,10 +60,8 @@ public class FallingWordsGame {
         } // reading the list of 10,000 words and storing all of them onto allWords
 
         String chosenWord = allWords.get(rand.nextInt(allWords.size()));
-        wordPassages.add(new TypePassage(chosenWord)); // add a random word from allWords to start the game off.
-        selectedWords.add(chosenWord);
-        xPosList.add(rand.nextInt(600) + 50); // randomly select the word's x coordinate from 50 to 650.
-        yPosList.add(80);
+        wordPassages.add(new TypePassage(chosenWord, rand.nextInt(600) + 50, 80));
+        // add a random word from allWords to start the game off. randomly select its x coord from 50 to 650
     }
 
     public int getCorrectChars() {
@@ -106,18 +100,6 @@ public class FallingWordsGame {
         return wordPassages;
     }
 
-    public List<Integer> getXPosList() {
-        return xPosList;
-    }
-
-    public List<Integer> getYPosList() {
-        return yPosList;
-    }
-
-    public List<String> getSelectedWords() {
-        return selectedWords;
-    }
-
     // Calculates the current typing game accuracy (correct chars/chars typed)
     public void calcAccuracy() {
         if (charsTyped == 0) {
@@ -132,9 +114,11 @@ public class FallingWordsGame {
     // at most one word will be at the bottom of the screen at any given time
     public void shiftWordsDown() {
         int indexToRemove = -1;
-        for (int i = 0; i<yPosList.size(); i++) {
-            yPosList.set(i, yPosList.get(i) + 5); // shift words down by 1+2*difficulty pixels
-            if (yPosList.get(i) >= 800) {
+        for (int i = 0; i<wordPassages.size(); i++) {
+            TypePassage current = wordPassages.get(i);
+            current.setYPos(current.getYPos() + 5); // shift words down by 5 pixels
+
+            if (current.getYPos() >= 800) {
                 indexToRemove = i; // index (within wordPassages) of the word to remove
             }
         }
@@ -145,9 +129,6 @@ public class FallingWordsGame {
                 wordSelected = false;
             }
             wordPassages.remove(indexToRemove);
-            selectedWords.remove(indexToRemove);
-            xPosList.remove(indexToRemove);
-            yPosList.remove(indexToRemove);
             livesLeft--;
             if (livesLeft == 0) {
                 gameLost = true;
@@ -159,7 +140,7 @@ public class FallingWordsGame {
     // first letter is unique (no 2 words on screen will have the same first letter). There can be a maximum of
     // 10 words on screen.
     public void addNewWord() {
-        if (selectedWords.size() > 10) {
+        if (wordPassages.size() > 10) {
             return;
         } else {
             String chosenWord = " "; // placeholder
@@ -168,8 +149,8 @@ public class FallingWordsGame {
                 boolean dupeFirstLetter = false;
                 chosenWord = allWords.get(rand.nextInt(allWords.size()));
 
-                for (String s : selectedWords) {
-                    if (s.substring(0, 1).equalsIgnoreCase(chosenWord.substring(0, 1))) {
+                for (TypePassage t : wordPassages) {
+                    if (t.getPassageWords().substring(0, 1).equalsIgnoreCase(chosenWord.substring(0, 1))) {
                         dupeFirstLetter = true;
                     }
                 }
@@ -179,10 +160,7 @@ public class FallingWordsGame {
                 }
             }
 
-            wordPassages.add(new TypePassage(chosenWord)); // add the selected word on screen.
-            selectedWords.add(chosenWord);
-            xPosList.add(rand.nextInt(600) + 50);
-            yPosList.add(80);
+            wordPassages.add(new TypePassage(chosenWord, rand.nextInt(600) + 50, 80));
         }
     }
 
@@ -214,17 +192,13 @@ public class FallingWordsGame {
                 int indexToRemove = wordPassages.indexOf(curPassage);
                 if (indexToRemove > -1) {
                     wordPassages.remove(indexToRemove);
-                    selectedWords.remove(indexToRemove);
-                    xPosList.remove(indexToRemove);
-                    yPosList.remove(indexToRemove);
-
                     wordsLeft--;
                 }
                 wordSelected = false;
             }
         } else { // If no word is currently being typed, the user can start typing any of the words on screen
-            for (int i=0; i<selectedWords.size(); i++) {
-                if (c == selectedWords.get(i).charAt(0)) {
+            for (int i=0; i<wordPassages.size(); i++) {
+                if (c == wordPassages.get(i).getPassageWords().charAt(0)) {
                     curPassage = wordPassages.get(i);
                     wordSelected = true;
                     curPassage.correctInput();
