@@ -30,8 +30,8 @@ displayed at the top of the screen.
 As the passage is being typed, each character's color will change in real 
 time, depending on if it's typed correctly or not. If the user types a 
 character correctly, it will turn blue. If the user types the character 
-incorrectly, it will turn red and stay that way until it is typed correctly. This
-convention is used for every game mode.
+incorrectly, it will turn red and stay that way until it is typed correctly. 
+**These conventions are used for every game mode.**
 
 Once the entire passage has been typed, the user will be shown a graph of 
 their WPM across the passage. They will also be given an option (via a 
