@@ -7,7 +7,12 @@ Upon running. a main menu will pop up asking the user to choose which game mode
 they wish to play (each game mode has a corresponding button). At the moment, 
 there are three game modes, with more possibly to come. At any time during these
 games, the user is provided a button at the very bottom of the screen to bring
-them back to the main menu:
+them back to the main menu.
+
+This originally started as a project for a class, at which time only the Typing
+Race was (quite poorly) implemented. Ever since then, I have developed the
+Falling Words and Boss Fight game modes on the side. I intend to expand on the
+Boss Fight mode slightly more, but am currently prioritizing other projects.
 
 ### -Typing Race (develops speed & accuracy)
 
