@@ -244,7 +244,6 @@ public class TypeRacePanel extends JPanel implements ActionListener, ChangeListe
 
         g.setFont(new Font("Arial", 20, 12));
         for (int i = 0; i<=5; i++) {
-            // Tick marks
             g.drawLine(140, 150 + i*100, 150, 150 + i*100);
             g.drawLine(150 + i*100, 650, 150 + i*100, 660);
 
