@@ -299,7 +299,7 @@ public class BossFightGame {
                     specialAttackCounter++;
                 }
 
-                if (phase == 1) {
+                if (phase == 1) { // Introduction/dialogue phase (skippable via button)
                     if (normalAttackCounter >= 680 || introSkip == true) {
                         phase = 2;
                         panel.setMainFight();
