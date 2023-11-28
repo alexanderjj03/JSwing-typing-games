@@ -132,21 +132,22 @@ public class FallingWordsPanel extends JPanel implements ActionListener {
 
     // GAME SCREEN
 
-    // Prints all the words onto the screen at their respective positions
+    // Prints all the TypePassages onto the screen at their respective positions
     // MODIFIES: g
     private void paintPassage(Graphics g) {
         Color saved = g.getColor();
+        g.setColor(new Color(0, 0, 0));
         g.setFont(new Font("Helvetica", 20, 20));
         FontMetrics fm = g.getFontMetrics();
         int width, xPos;
 
         for (int i=0; i<game.getWordPassages().size(); i++) {
             // to ensure that no words spill off the side of the panel
-            width = fm.stringWidth(game.getSelectedWords().get(i));
-            if (game.getXPosList().get(i) + width > 760) {
+            width = fm.stringWidth(game.getWordPassages().get(i).getPassageWords());
+            if (game.getWordPassages().get(i).getXPos() + width > 760) {
                 xPos = 760 - width;
             } else {
-                xPos = game.getXPosList().get(i);
+                xPos = game.getWordPassages().get(i).getXPos();
             }
 
             for (TypeChar c : game.getWordPassages().get(i).getCharList()) {
@@ -154,7 +155,7 @@ public class FallingWordsPanel extends JPanel implements ActionListener {
                 String str = Character.toString(c.getChar());
                 int charWidth = fm.stringWidth(str);
                 g.setColor(c.getStatus());
-                g.drawString(str, xPos, game.getYPosList().get(i));
+                g.drawString(str, xPos, game.getWordPassages().get(i).getYPos());
                 xPos += charWidth + 1;
             }
         }
