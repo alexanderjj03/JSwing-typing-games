@@ -53,7 +53,7 @@ the game is over, the user is given the option to play again.
 
 *See note marked ** under Boss Fight.
 
-### -Boss Fight (just for fun)
+### -Boss Fight (just for fun + simulates typing under pressure)
 
 The user must put their typing skills to use to defeat a 
 custom boss called the Wizard of Words. The player and boss icons are placed on opposite
