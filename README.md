@@ -76,6 +76,6 @@ health, the player wins.
 
 **No two words on screen will have the same first character. Otherwise, there
 could be cases where the user is trying to type one word but the program ends up
-typing a different one. This also means that once you start typing a word, you must
+typing a different one. This also means that once the user starts typing a word, they must
 finish typing it unless it disappears. Furthermore, to make the game semi-fair, only 
-6-14 character long words are considered.
+6-14 character long words are considered for selection.
