@@ -10,9 +10,10 @@ games, the user is provided a button at the very bottom of the screen to bring
 them back to the main menu.
 
 This originally started as a project for a class, at which time only the Typing
-Race was (quite poorly) implemented. Ever since then, I have developed the
-Falling Words and Boss Fight game modes on the side. I intend to expand on the
-Boss Fight mode slightly more, but am prioritizing more ambitious and serious projects.
+Race was (poorly) implemented. I took this idea and ran with it after the class ended; 
+ever since then, I have developed the Falling Words and Boss Fight game modes on the 
+side. I intend to expand on the Boss Fight mode slightly more, but am prioritizing 
+more ambitious and serious projects.
 
 ### -Typing Race (develops speed & accuracy)
 
