@@ -1,5 +1,8 @@
 package TypeGameModel;
 
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.time.Clock;
@@ -19,12 +22,13 @@ public class TypeRaceGame {
     private int correctChars;
     private int charsTyped;
     private int accuracy;
+    private int ticksElapsed;
     private boolean gameOver;
 
-    private Clock clock;
+    private Timer t;
     private double initialTime; // time when first character is typed
     private List<Double> wpmList; // list of "current" wpm's, calculated per 50 correct characters
-    private List<Double> timeList; // times at which each measurement in wpmList was taken
+    private List<Integer> timeList; // times at which each measurement in wpmList was taken
     private double cumulativeWpm; // cumulative wpm
 
     // Constructs the typing game. Initializes all instance variables and creates a passage of randomly selected words.
@@ -32,10 +36,10 @@ public class TypeRaceGame {
     public TypeRaceGame(int numWords) {
         List<String> chosenWords = new ArrayList<>();
         List<String> allWords = new ArrayList<>();
-        clock = Clock.systemDefaultZone();
         correctChars = 0;
         charsTyped = 0;
         accuracy = 100;
+        ticksElapsed = 0;
         initialTime = 0; // placeholder until first character is typed
         wpmList = new ArrayList<>();
         timeList = new ArrayList<>();
@@ -59,6 +63,20 @@ public class TypeRaceGame {
             chosenWords.add(allWords.get(rand.nextInt(allWords.size())));
         } // randomly selecting numWords words from allWords to be added to the passage
         passage = new TypePassage(chosenWords);
+    }
+
+    // Sets up a timer that is initialized when the game starts. Used to calculate WPM
+    // MODIFIES: none
+    // EFFECTS: initializes a timer that ticks every 25 milliseconds
+    private void addTimer() {
+        t = new Timer(25, new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                ticksElapsed++;
+            }
+        });
+        t.start();
     }
 
     public TypePassage getPassage() {
@@ -89,7 +107,7 @@ public class TypeRaceGame {
         return wpmList;
     }
 
-    public List<Double> getTimeList() {
+    public List<Integer> getTimeList() {
         return timeList;
     }
 
@@ -116,9 +134,8 @@ public class TypeRaceGame {
             } catch (InterruptedException e) {}
         } // to prevent synchrony issues.
         running = true;
-        double curTime = clock.millis(); // timestamp for when the character was typed.
         if (charsTyped == 0) {
-            initialTime = clock.millis();
+            addTimer(); // starts the timer when the first character is typed
         }
         if (c == passage.getCharList().get(correctChars).getChar()) {
             // determining if the typed character matches the one that needs to be typed.
@@ -131,21 +148,21 @@ public class TypeRaceGame {
         calcAccuracy();
 
         if ((correctChars % 10 == 0) && (correctChars != 0)) {
-            cumulativeWpm = Math.round(10*(correctChars * 13500.0)/(curTime - initialTime))/10.0;
+            cumulativeWpm = Math.round(10*(correctChars * 480.0)/ticksElapsed)/10.0;
             // calculating wpm up to this point. This calculation is made every 10 correct characters to minimize lag.
             if (correctChars % 50 == 0) {
                 if (correctChars == 50) {
                     wpmList.add(cumulativeWpm);
                 } else {
-                    wpmList.add(Math.round(10*(50.0 * 13500.0)/(curTime - timeList.get(timeList.size() - 1)))/10.0);
+                    wpmList.add(Math.round(10.0*(50.0 * 480.0)/(ticksElapsed - timeList.get(timeList.size() - 1)))/10.0);
                     // calculating "current" wpm (over last 50 characters)
                 }
-                timeList.add(curTime);
+                timeList.add(ticksElapsed);
             }
         }
 
         if (passage.checkComplete()) {
-            cumulativeWpm = Math.round(10*(correctChars * 13500.0)/(curTime - initialTime))/10.0;
+            cumulativeWpm = Math.round(10.0*(correctChars * 480.8)/(ticksElapsed - initialTime))/10.0;
             gameOver = true;
         }
         running = false;
