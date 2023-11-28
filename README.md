@@ -75,7 +75,7 @@ the boss' words bounce off the arena walls). Once the boss' loses all their
 health, the player wins.
 
 **No two words on screen will have the same first character. Otherwise, there
-would be cases where the user is trying to type one word but the program ends up
+could be cases where the user is trying to type one word but the program ends up
 typing a different one. This also means that once you start typing a word, you must
 finish typing it unless it disappears. Furthermore, to make the game semi-fair, only 
 6-14 character long words are considered.
