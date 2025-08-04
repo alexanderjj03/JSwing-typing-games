@@ -1,6 +1,6 @@
 # Typeracer-style Typing Games
 
-## By Alexander Jacobson (NOTE: I made this two years ago, this poorly represents my current capabilities)
+## By Alexander Jacobson (NOTE: As of 2025, I made this two years ago. This poorly represents my current capabilities)
 
 This application will help a user improve their typing speed and accuracy. 
 Upon running. a main menu will pop up asking the user to choose which game mode
@@ -79,4 +79,5 @@ could be cases where the user is trying to type one word but the program ends up
 typing a different one. This also means that once the user starts typing a word, they must
 finish typing it unless it disappears. Furthermore, to make the game semi-fair, only 
 6-14 character long words are considered for selection.
+
 
